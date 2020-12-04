@@ -1,8 +1,8 @@
 import React from 'react';
 import firebase from 'firebase';
-import env from "./../env.json"
-import { actions } from "../actions/action"
-import store from "../store"
+import env from "../../env.json"
+import { actions } from "../../actions/action"
+import store from "../../store"
 
 const config = {
     apiKey: env.apiKey,

@@ -1,12 +1,26 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
+import { Switch,BrowserRouter as Router, Route } from "react-router-dom";
+
+import { Provider } from 'react-redux';
+import Store from './store';
+import { Home } from "./components/Home/Home"
+import { SignIn } from "./components/Auth/SignIn"
+import { SignUp } from "./components/Auth/SignUp"
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+        <Provider store={Store}>
+      <Router>
+        <Switch>
+            <Route path="/signin" component={SignIn}></Route>
+              <Route path="/signup" component={SignUp}></Route>
+              <Route path="/" component={Home}></Route>
+        </Switch>
+      </Router>
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 );
