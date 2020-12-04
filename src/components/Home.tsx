@@ -1,6 +1,8 @@
 import React from 'react';
 import firebase from 'firebase';
-import env from "../../env.json"
+import env from "./../env.json"
+import { actions } from "../actions/action"
+import store from "../store"
 
 const config = {
     apiKey: env.apiKey,
@@ -10,14 +12,25 @@ const config = {
     messagingSenderId: env.messagingSenderId
   };
 
-const firebaseApp = firebase.initializeApp(config);
-export const firestore = firebaseApp.firestore();
+
+  if (!firebase.apps.length) {
+    
+    firebase.initializeApp(config);
+
+
+  }
+export const db = firebase.firestore();
 
 
 export class Home extends React.Component {
 
-    post(){
-        alert("test")
+   async post(){
+    //    const result = await db.collection("members").add({
+    //         test:"test"
+    //     })
+    //     console.log(result)
+    store.dispatch(actions.updateEmail("test"))
+
     }
 
     render(){
