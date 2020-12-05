@@ -3,6 +3,19 @@ import firebase from 'firebase';
 import env from "../../env.json"
 import { actions } from "../../actions/action"
 import store from "../../store"
+import {
+    Formik,
+    FormikHelpers,
+    FormikProps,
+    Form,
+    Field,
+    FieldProps,
+  } from 'formik';
+
+
+
+
+
 
 const config = {
     apiKey: env.apiKey,
@@ -19,17 +32,48 @@ const config = {
 
 
   }
+
+interface Props {
+
+  history:string[]
+
+}
+
+interface State {
+    initialValues:{
+        email:string;
+        password:string;
+        confirmPass:string;
+
+    }
+}
+
+  
 export const db = firebase.firestore();
 
 
-export class SignIn extends React.Component {
+export class SignIn extends React.Component<Props,State> {
+    constructor(props:Props){
+        super(props)
+        this.state ={
 
-   async post(){
-    //    const result = await db.collection("members").add({
-    //         test:"test"
-    //     })
-    //     console.log(result)
-    store.dispatch(actions.updateEmail("test"))
+            initialValues:{
+                email:"",
+                password:"",
+                confirmPass:""
+            }
+        }
+    }
+
+    post(){
+
+      firebase.auth().signOut().then(()=>{
+        console.log("ログアウトしました");
+      })
+      .catch( (error)=>{
+        console.log(`ログアウト時にエラーが発生しました (${error})`);
+      });
+
 
     }
 
@@ -37,7 +81,38 @@ export class SignIn extends React.Component {
         return (
 
             <div>
-                <button onClick={this.post}>post</button>
+
+<Formik
+         initialValues={this.state.initialValues}
+         onSubmit={(values, actions) => {
+
+
+          firebase.auth().signInWithEmailAndPassword(values.email, values.password)
+  .then((user) => {
+
+    this.props.history.push('/')
+
+  })
+  .catch((error) => {
+    var errorCode = error.code;
+    var errorMessage = error.message;
+    // ..
+  });
+
+
+         }}
+       >
+         <Form>
+           <label htmlFor="firstName">First Name</label>
+           <Field name="email" placeholder="Email" />
+           <label htmlFor="firstName">Pass</label>
+
+           <Field type="password" name="password" placeholder="pass" />
+           <button type="submit">sign in</button>
+         </Form>
+       </Formik>
+       <button onClick={this.post}>out</button>
+                
           </div>
 
         )

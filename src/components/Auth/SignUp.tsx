@@ -62,22 +62,6 @@ export class SignUp extends React.Component<Props,State> {
         }
     }
 
-post(params: {
-    email: string;
-    password: string;}){
-     firebase.auth().createUserWithEmailAndPassword(params.email, params.password).then(function(res){
-         console.log(res.user?.uid)
-     })
-      .catch((error) => {
-        var errorCode = error.code;
-        var errorMessage = error.message;
-        // ..
-      });
-
-    // store.dispatch(actions.updateEmail("test"))
-
-    }
-
     render(){
         return (
 
@@ -91,7 +75,26 @@ post(params: {
                     email:values.email,
                     password:values.password
                 }
-                this.post(params)
+
+                
+                firebase.auth().createUserWithEmailAndPassword(params.email, params.password).then(function(res){
+                  db.collection("users").doc(res.user?.uid).set({
+                    uid: res.user?.uid,
+                    createdAt: Date.now()
+
+                })
+                .then(function() {
+                    console.log("Document successfully written!");
+                })
+                .catch(function(error) {
+                    console.error("Error writing document: ", error);
+                });
+              })
+               .catch((error) => {
+                 var errorCode = error.code;
+                 var errorMessage = error.message;
+                 // ..
+               });
 
              }else{
                  alert("test")
@@ -109,7 +112,7 @@ post(params: {
 
            <Field name="confirmPass" placeholder="confirm" />
 
-           <button type="submit">Submit</button>
+           <button type="submit">sign up</button>
          </Form>
        </Formik>
                 
