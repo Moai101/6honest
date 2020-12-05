@@ -25,10 +25,18 @@ export const db = firebase.firestore();
 export class Home extends React.Component {
 
    async post(){
-    //    const result = await db.collection("members").add({
-    //         test:"test"
-    //     })
-    //     console.log(result)
+    var user = firebase.auth().currentUser;
+    var uid = user?.uid
+       const result = await db.collection("5w1h").add({
+            when:"いつ",
+            where:"どこで",
+            who:"だれが",
+            what:"何を",
+            why:"なぜ",
+            how:"どうやって",
+            uid:uid
+
+        })
     store.dispatch(actions.updateEmail("test"))
 
     }
