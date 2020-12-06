@@ -8,6 +8,8 @@ import Store from './store';
 import { Home } from "./components/Home/Home"
 import { SignIn } from "./components/Auth/SignIn"
 import { SignUp } from "./components/Auth/SignUp"
+import { New } from "./components/New/New"
+
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
@@ -17,6 +19,7 @@ ReactDOM.render(
         <Switch>
             <Route path="/signin" component={SignIn}></Route>
               <Route path="/signup" component={SignUp}></Route>
+              <Route path="/new" component={New}></Route>
               <Route path="/" component={Home}></Route>
         </Switch>
       </Router>

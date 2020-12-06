@@ -19,33 +19,61 @@ const config = {
 
 
   }
+
+  interface Props {
+
+    history:string[]
+  
+  }
+
+  interface State {
+    when:string[];
+    where:string[];
+    who:string[];
+    what:string[];
+    why:string[];
+    how:string[];
+    result:string[];
+
+
+  }
 export const db = firebase.firestore();
 
 
-export class Home extends React.Component {
+export class Home extends React.Component<Props,State>{
 
-   async post(){
-    var user = firebase.auth().currentUser;
-    var uid = user?.uid
-       const result = await db.collection("5w1h").add({
-            when:"いつ",
-            where:"どこで",
-            who:"だれが",
-            what:"何を",
-            why:"なぜ",
-            how:"どうやって",
-            uid:uid
-
-        })
-    store.dispatch(actions.updateEmail("test"))
+  constructor(props:Props){
+    super(props)
+    this.state = {
+      when:[],
+      where:[],
+      who:[],
+      what:[],
+      why:[],
+      how:[],
+      result:[]
 
     }
+  }
+
+  post(){
+
+    this.props.history.push('/new')
+
+
+
+    }
+
+    addText(){
+
+    }
+
 
     render(){
         return (
 
             <div>
-                <button onClick={this.post}>post</button>
+                <button onClick={this.post.bind(this)}>post</button>
           </div>
 
         )
