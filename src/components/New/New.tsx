@@ -3,7 +3,15 @@ import firebase from 'firebase';
 import env from "../../env.json"
 import { actions } from "../../actions/action"
 import store from "../../store"
-import { Chip, Paper, TextField, Button } from '@material-ui/core';
+import { Chip, 
+  TextField, 
+  Button, 
+  InputLabel,
+  MenuItem,
+  FormControl,
+  Select
+
+ } from '@material-ui/core';
 import { createStyles, Theme, makeStyles } from '@material-ui/core/styles';
 import {
     Formik,
@@ -13,7 +21,7 @@ import {
     Field,
     FieldProps,
   } from 'formik';
-import { Test } from "./elements/css/style"
+import { Box, BoxContainer } from "./elements/css/style"
 
 
 
@@ -41,6 +49,7 @@ const config = {
 
 
   interface State {
+    text:string;
     whenList:string[];
     whereList:string[];
     whoList:string[];
@@ -48,13 +57,13 @@ const config = {
     whyList:string[];
     howList:string[];
     resultList:string[];
-    isWhen:boolean;
-    isWhere:boolean;
-    isWho:boolean;
-    isWhat:boolean;
-    isWhy:boolean;
-    isHow:boolean;
-    chipData:string[]
+    whenNumber:number,
+    whereNumber:number,
+    whoNumber:number,
+    whatNumber:number,
+    whyNumber:number,
+    howNumber:number,
+    resultNumber:number;
     initialValues:{
         when:string;
         where:string;
@@ -64,7 +73,9 @@ const config = {
         how:string;
         result:string
 
-    }
+    },
+    open: boolean,
+    w:string;
 
 
   }
@@ -75,7 +86,14 @@ const config = {
 export const db = firebase.firestore();
 
 
+const formControl = {
+  minWidth: 120,
+}
+
+
+
 export class New extends React.Component<Props,State>{
+
 
 
   constructor(props:Props){
@@ -88,15 +106,14 @@ export class New extends React.Component<Props,State>{
     whyList:[],
     howList:[],
     resultList:[],
-    isWhen:true,
-    isWhere:true,
-    isWho:true,
-    isWhat:true,
-    isWhy:true,
-    isHow:true,
-    chipData:[
-      'Angular','Polymer', 'React', 'Vue.js'
-    ],
+    text:"",
+    whenNumber:0,
+    whereNumber:0,
+    whoNumber:0,
+    whatNumber:0,
+    whyNumber:0,
+    howNumber:0,
+    resultNumber:0,
       initialValues:{
         when:"",
         where:"",
@@ -105,7 +122,9 @@ export class New extends React.Component<Props,State>{
         why:"",
         how:"",
         result:""
-    }
+    },
+    open: false,
+    w:""
 
     }
   }
@@ -128,32 +147,166 @@ export class New extends React.Component<Props,State>{
 
     }
 
+    handleClose(){
+      this.setState({open:false})
+
+    }
+
+    handleOpen() {
+      this.setState({open:true})
+    }
+    
+
     addText(){
 
-      alert("test")
+      switch(this.state.w){
+        case 'when':
+          this.state.whenList.push(this.state.text)
+          this.setState({whenList:this.state.whenList})
+          this.setState({whenNumber:this.state.whenList.length-1})
+          this.setState({text:""})
+          break;
+        case 'where':
+          this.state.whereList.push(this.state.text)
+          this.setState({whereList:this.state.whereList})
+          this.setState({whereNumber:this.state.whereList.length-1})
+          this.setState({text:""})
+          break;
+          case 'who':
+            this.state.whoList.push(this.state.text)
+            this.setState({whoList:this.state.whoList})
+            this.setState({whoNumber:this.state.whoList.length-1})
+            this.setState({text:""})
+            break;
+          case 'what':
+              this.state.whatList.push(this.state.text)
+              this.setState({whatList:this.state.whatList})
+              this.setState({whatNumber:this.state.whatList.length-1})
+              this.setState({text:""})
+              break;
+          case 'why':
+                this.state.whyList.push(this.state.text)
+                this.setState({whyList:this.state.whyList})
+                this.setState({whyNumber:this.state.whyList.length-1})
+                this.setState({text:""})
+                break;
+          case 'how':
+                  this.state.howList.push(this.state.text)
+                  this.setState({howList:this.state.howList})
+                  this.setState({whatNumber:this.state.howList.length-1})
+                  this.setState({text:""})
+                  break;
+         case 'result':
+                    this.state.resultList.push(this.state.text)
+                    this.setState({resultList:this.state.resultList})
+                    this.setState({resultNumber:this.state.resultList.length-1})
+                    this.setState({text:""})
+                    break;
+         case '':
+           alert("select")
+
+      }
+
+
+
     }
 
-    hanleOnChangeWhen(){
-      this.setState({
-        isWhen:!this.state.isWhen
-      })
-    }
-
-    handleDelete(data:string){
-      console.log(this.state.chipData)
-var res = this.state.chipData.filter(function(a) {
-  return a !== data;
-});
-console.log(res)
-this.setState({chipData:res})
-
+    handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+      this.setState({w:event.target.value as string});
     };
+
+    handleW = (params:{w:string,data:string}) => {
+
+      switch(params.w){
+        case 'when':
+          this.setState({whenNumber:this.state.whenList.indexOf(params.data)})
+          break;
+          case 'where':
+            this.setState({whereNumber:this.state.whereList.indexOf(params.data)})
+            break;
+          case 'who':
+              this.setState({whoNumber:this.state.whoList.indexOf(params.data)})
+              break;
+          case 'what':
+                this.setState({whatNumber:this.state.whatList.indexOf(params.data)})
+                break;
+          case 'why':
+                  this.setState({whyNumber:this.state.whyList.indexOf(params.data)})
+                  break;
+          case "how":
+              this.setState({howNumber:this.state.howList.indexOf(params.data)})
+              break;
+          case "result":
+            this.setState({resultNumber:this.state.resultList.indexOf(params.data)})
+            break;
+            
+
+      }
+
+
+
+
+    }
+
+    handleDelete(params:{w:string,data:string}){
+
+      switch(params.w){
+        case 'when':
+          var res = this.state.whenList.filter(function(a) {
+            return a !== params.data;
+          });
+            this.setState({whenList:res})
+          break;
+          case 'where':
+            var res = this.state.whereList.filter(function(a) {
+              return a !== params.data;
+            });
+              this.setState({whereList:res})
+            break;
+          case 'who':
+            var res = this.state.whoList.filter(function(a) {
+              return a !== params.data;
+            });
+              this.setState({whoList:res})
+              break;
+          case 'what':
+            var res = this.state.whatList.filter(function(a) {
+              return a !== params.data;
+            });
+              this.setState({whatList:res})
+                break;
+          case 'why':
+            var res = this.state.whyList.filter(function(a) {
+              return a !== params.data;
+            });
+              this.setState({whyList:res})
+                  break;
+          case "how":
+            var res = this.state.howList.filter(function(a) {
+              return a !== params.data;
+            });
+              this.setState({howList:res})
+              break;
+          case "result":
+            var res = this.state.resultList.filter(function(a) {
+              return a !== params.data;
+            });
+              this.setState({resultList:res})
+            break;
+            
+
+      }
+
+
+  };
 
     render(){
 
         return (
 
             <div>
+
+
                 <Formik
          initialValues={this.state.initialValues}
          onSubmit={(values, actions) => {
@@ -163,65 +316,179 @@ this.setState({chipData:res})
          }}
        >
          <Form>
-           {
-      (()=>{
-        if(this.state.isWhen === true){
-          return (
 
           <div>
-                    <h1>When</h1>:
-                    <Test>
                     <TextField
           id="standard-multiline-flexible"
-          label="Multiline"
+          label="Enter text"
           multiline
+          value={this.state.text} 
+          onChange={event => {
+            const { value } = event.target;
+            this.setState({ text: value });
+          }}
           rowsMax={4}
         />
+            <FormControl
+            style={formControl}
+            >
+        <InputLabel id="demo-controlled-open-select-label">select</InputLabel>
+        <Select
+          labelId="demo-controlled-open-select-label"
+          id="demo-controlled-open-select"
+          open={this.state.open}
+          onClose={this.handleClose.bind(this)}
+          onOpen={this.handleOpen.bind(this)}
+          value={this.state.w}
+          onChange={this.handleChange}
+        >
+          <MenuItem value={"when"}>When</MenuItem>
+          <MenuItem value={"where"}>Where</MenuItem>
+          <MenuItem value={"who"}>Who</MenuItem>
+          <MenuItem value={"what"}>What</MenuItem>
+          <MenuItem value={"why"}>Why</MenuItem>
+          <MenuItem value={"how"}>How</MenuItem>
+          <MenuItem value={"result"}>Result</MenuItem>
+        </Select>
+      </FormControl>
         <Button 
-        onClick={this.addText}
+        onClick={this.addText.bind(this)}
         variant="contained" 
         color="primary">
   Primary
 </Button>
-                    </Test>
-                    <div>
-      {this.state.chipData.map((data) => {
-
-
+                    <BoxContainer>
+                      <Box>
+                      <h1>When:{this.state.whenList[this.state.whenNumber]}</h1>
+                      </Box>
+                      <Box>
+                      {this.state.whenList.map((data) => {
         return (
-          <Test>
                         <Chip
               label={data}
-              onDelete={() => this.handleDelete(data)}
+              onClick={() => this.handleW({w:"when",data:data})}
+              onDelete={() => this.handleDelete({w:'when',data:data})}
             />
-          </Test>
 
         );
       })}
-       </div>
+                      </Box>
+       </BoxContainer>
+       <BoxContainer>
+       <Box>
+       <h1>Where:{this.state.whereList[this.state.whereNumber]}</h1>
+       </Box>
+       <Box>
+       {this.state.whereList.map((data) => {
+        return (
+                        <Chip
+              label={data}
+              onClick={() => this.handleW({w:"where",data:data})}
+              onDelete={() => this.handleDelete({w:'where',data:data})}
+            />
 
-    <div>
-    <Field type="text" name="when" placeholder="pass" />
-    <button onClick={this.hanleOnChangeWhen.bind(this)}>test</button>
-    </div>
+        );
+      })}
+       </Box>
+
+       </BoxContainer>
+       <BoxContainer>
+       <Box>
+       <h1>Who:{this.state.whoList[this.state.whoNumber]}</h1>
+       </Box>
+       <Box>
+       {this.state.whoList.map((data) => {
+        return (
+                        <Chip
+              label={data}
+              onClick={() => this.handleW({w:"who",data:data})}
+              onDelete={() => this.handleDelete({w:'who',data:data})}
+            />
+
+        );
+      })}
+
+       </Box>
+       </BoxContainer>
+       <BoxContainer>
+       <Box>
+       <h1>What:{this.state.whatList[this.state.whatNumber]}</h1>
+       </Box>
+       <Box>
+       {this.state.whatList.map((data) => {
+        return (
+                        <Chip
+              label={data}
+              onClick={() => this.handleW({w:"what",data:data})}
+              onDelete={() => this.handleDelete({w:'what',data:data})}
+            />
+
+        );
+      })}
+       </Box>
+
+      
+       </BoxContainer>
+       <BoxContainer>
+       <Box>
+       <h1>Why:{this.state.whyList[this.state.whyNumber]}</h1>
+       </Box>
+       <Box>
+       {this.state.whyList.map((data) => {
+        return (
+                        <Chip
+              label={data}
+              onClick={() => this.handleW({w:"why",data:data})}
+              onDelete={() => this.handleDelete({w:'why',data:data})}
+            />
+
+        );
+      })}
+       </Box>
+
+      
+       </BoxContainer>
+       <BoxContainer>
+       <Box>
+       <h1>How:{this.state.howList[this.state.howNumber]}</h1>
+       </Box>
+       <Box>
+       {this.state.howList.map((data) => {
+        return (
+                        <Chip
+              label={data}
+              onClick={() => this.handleW({w:"how",data:data})}
+              onDelete={() => this.handleDelete({w:'how',data:data})}
+            />
+
+        );
+      })}
+       </Box>
+    
+      
+       </BoxContainer>
+       <BoxContainer>
+         <Box>
+         <h1>Result:{this.state.resultList[this.state.resultNumber]}</h1>
+         </Box>
+         <Box>
+         {this.state.resultList.map((data) => {
+        return (
+                        <Chip
+              label={data}
+              onClick={() => this.handleW({w:"result",data:data})}
+              onDelete={() => this.handleDelete({w:'result',data:data})}
+            />
+
+        );
+      })}
+         </Box>
+
+    
+       </BoxContainer>
           </div>
-          )
-        }else{
-          return (
-            <div>
-                         <label htmlFor="When">When</label>:
-
-                        <div>未入力です。</div>
-          <button onClick={this.hanleOnChangeWhen.bind(this)}>test</button>
-
-            </div>
           
-
-
-            )
-        }
-      })()
-             }
+        
         
            <div>
            <button type="submit">sign in</button>

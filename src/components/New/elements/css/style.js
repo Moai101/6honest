@@ -1,6 +1,13 @@
 import styled from 'styled-components';
 
 
-export const Test = styled.div`
-display: inline-block;
+export const BoxContainer = styled.div`
+overflow: hidden
 `;
+
+export const Box = styled.div`
+float: left
+`;
+
+
+  
