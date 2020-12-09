@@ -50,6 +50,7 @@ const config = {
 
   interface State {
     text:string;
+    title:string;
     whenList:string[];
     whereList:string[];
     whoList:string[];
@@ -64,16 +65,6 @@ const config = {
     whyNumber:number,
     howNumber:number,
     resultNumber:number;
-    initialValues:{
-        when:string;
-        where:string;
-        who:string;
-        what:string;
-        why:string;
-        how:string;
-        result:string
-
-    },
     open: boolean,
     w:string;
 
@@ -107,6 +98,7 @@ export class New extends React.Component<Props,State>{
     howList:[],
     resultList:[],
     text:"",
+    title:"",
     whenNumber:0,
     whereNumber:0,
     whoNumber:0,
@@ -114,15 +106,6 @@ export class New extends React.Component<Props,State>{
     whyNumber:0,
     howNumber:0,
     resultNumber:0,
-      initialValues:{
-        when:"",
-        where:"",
-        who:"",
-        what:"",
-        why:"",
-        how:"",
-        result:""
-    },
     open: false,
     w:""
 
@@ -133,17 +116,18 @@ export class New extends React.Component<Props,State>{
     var user = firebase.auth().currentUser;
     var uid = user?.uid
        const result = await db.collection("5w1h").add({
-            when:"いつ",
-            where:"どこで",
-            who:"だれが",
-            what:"何を",
-            why:"なぜ",
-            how:"どうやって",
-            result:"",
+            title:this.state.title,
+            when:this.state.whenList,
+            where:this.state.whereList,
+            who:this.state.whoList,
+            what:this.state.whatList,
+            why:this.state.whatList,
+            how:this.state.howList,
+            result:this.state.resultList,
             uid:uid
 
         })
-    store.dispatch(actions.updateEmail("test"))
+        console.log(result)
 
     }
 
@@ -306,16 +290,19 @@ export class New extends React.Component<Props,State>{
 
             <div>
 
+<div>
+<TextField
+          id="standard-multiline-flexible"
+          label="Enter title"
+          value={this.state.title} 
+          onChange={event => {
+            const { value } = event.target;
+            this.setState({ title: value });
+          }}
+          rowsMax={4}
+        />
+</div>
 
-                <Formik
-         initialValues={this.state.initialValues}
-         onSubmit={(values, actions) => {
-
-
-
-         }}
-       >
-         <Form>
 
           <div>
                     <TextField
@@ -359,7 +346,7 @@ export class New extends React.Component<Props,State>{
 </Button>
                     <BoxContainer>
                       <Box>
-                      <h1>When:{this.state.whenList[this.state.whenNumber]}</h1>
+                      <h3>When:{this.state.whenList[this.state.whenNumber]}</h3>
                       </Box>
                       <Box>
                       {this.state.whenList.map((data) => {
@@ -376,7 +363,7 @@ export class New extends React.Component<Props,State>{
        </BoxContainer>
        <BoxContainer>
        <Box>
-       <h1>Where:{this.state.whereList[this.state.whereNumber]}</h1>
+       <h3>Where:{this.state.whereList[this.state.whereNumber]}</h3>
        </Box>
        <Box>
        {this.state.whereList.map((data) => {
@@ -394,7 +381,7 @@ export class New extends React.Component<Props,State>{
        </BoxContainer>
        <BoxContainer>
        <Box>
-       <h1>Who:{this.state.whoList[this.state.whoNumber]}</h1>
+       <h3>Who:{this.state.whoList[this.state.whoNumber]}</h3>
        </Box>
        <Box>
        {this.state.whoList.map((data) => {
@@ -412,7 +399,7 @@ export class New extends React.Component<Props,State>{
        </BoxContainer>
        <BoxContainer>
        <Box>
-       <h1>What:{this.state.whatList[this.state.whatNumber]}</h1>
+       <h3>What:{this.state.whatList[this.state.whatNumber]}</h3>
        </Box>
        <Box>
        {this.state.whatList.map((data) => {
@@ -431,7 +418,7 @@ export class New extends React.Component<Props,State>{
        </BoxContainer>
        <BoxContainer>
        <Box>
-       <h1>Why:{this.state.whyList[this.state.whyNumber]}</h1>
+       <h3>Why:{this.state.whyList[this.state.whyNumber]}</h3>
        </Box>
        <Box>
        {this.state.whyList.map((data) => {
@@ -450,7 +437,7 @@ export class New extends React.Component<Props,State>{
        </BoxContainer>
        <BoxContainer>
        <Box>
-       <h1>How:{this.state.howList[this.state.howNumber]}</h1>
+       <h3>How:{this.state.howList[this.state.howNumber]}</h3>
        </Box>
        <Box>
        {this.state.howList.map((data) => {
@@ -469,7 +456,7 @@ export class New extends React.Component<Props,State>{
        </BoxContainer>
        <BoxContainer>
          <Box>
-         <h1>Result:{this.state.resultList[this.state.resultNumber]}</h1>
+         <h3>Result:{this.state.resultList[this.state.resultNumber]}</h3>
          </Box>
          <Box>
          {this.state.resultList.map((data) => {
@@ -491,11 +478,9 @@ export class New extends React.Component<Props,State>{
         
         
            <div>
-           <button type="submit">sign in</button>
+           <button onClick={this.post.bind(this)}>sign in</button>
 
            </div>
-         </Form>
-       </Formik>
 
                 
           </div>
