@@ -152,7 +152,7 @@ export class Edit extends React.Component<Props,State>{
    async post(){
     var user = firebase.auth().currentUser;
     var uid = user?.uid
-       const result = await db.collection("5w1h").doc(store.getState().params).update({
+       const result = await db.collection("5w1h").doc(store.getState().params).set({
             title:this.state.title,
             when:this.state.whenList,
             where:this.state.whereList,
