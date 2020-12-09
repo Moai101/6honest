@@ -53,6 +53,15 @@ export class Home extends React.Component<Props,State>{
     }
   }
 
+  goToEdit(path:string){
+
+    store.dispatch(actions.getPathParams(path))
+
+
+    this.props.history.push('/edit')
+
+  }
+
   async getData(){
 
     const uid = "6dlFUbzpfzgH8MyGJ8d2KtQjLpM2"
@@ -116,7 +125,7 @@ export class Home extends React.Component<Props,State>{
       <CardActions>
         <Button 
         size="small"
-        onClick={()=> alert(data.id)}
+        onClick={this.goToEdit.bind(this,data.id)}
         >Edit</Button>
       </CardActions>
     </Card>

@@ -4,11 +4,13 @@ import { actions } from '../actions/action';
 export interface state {
   name: string;
   email: string;
+  params:string;
 }
 
 const initialState: state = {
   name: '',
-  email: ''
+  email: '',
+  params:'',
 };
 
 export const reducer = reducerWithInitialState(initialState)
@@ -17,4 +19,7 @@ export const reducer = reducerWithInitialState(initialState)
   })
   .case(actions.updateEmail, (state, email) => {
     return Object.assign({}, state, { email });
+  })
+  .case(actions.getPathParams, (state, params) => {
+    return Object.assign({}, state, { params });
   });
