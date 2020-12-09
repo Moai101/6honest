@@ -158,7 +158,7 @@ export class Edit extends React.Component<Props,State>{
             where:this.state.whereList,
             who:this.state.whoList,
             what:this.state.whatList,
-            why:this.state.whatList,
+            why:this.state.whyList,
             how:this.state.howList,
             result:this.state.resultList,
             memo:this.state.memo,
@@ -215,7 +215,7 @@ export class Edit extends React.Component<Props,State>{
           case 'how':
                   this.state.howList.push(this.state.text)
                   this.setState({howList:this.state.howList})
-                  this.setState({whatNumber:this.state.howList.length-1})
+                  this.setState({howNumber:this.state.howList.length-1})
                   this.setState({text:""})
                   break;
          case 'result':
