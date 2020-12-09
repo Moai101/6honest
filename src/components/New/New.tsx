@@ -21,7 +21,11 @@ import {
     Field,
     FieldProps,
   } from 'formik';
-import { Box, BoxContainer } from "./elements/css/style"
+import { 
+  Box, 
+  BoxContainer,
+  Margin
+ } from "./elements/css/style"
 
 
 
@@ -67,6 +71,16 @@ const config = {
     resultNumber:number;
     open: boolean,
     w:string;
+    memo:string;
+    people:{
+      when:string,
+      where:string,
+      who:string,
+      what:string,
+      why:string,
+      how:string,
+      result:string
+    }[]
 
 
   }
@@ -107,7 +121,9 @@ export class New extends React.Component<Props,State>{
     howNumber:0,
     resultNumber:0,
     open: false,
-    w:""
+    w:"",
+    memo:"",
+    people:[]
 
     }
   }
@@ -124,6 +140,7 @@ export class New extends React.Component<Props,State>{
             why:this.state.whatList,
             how:this.state.howList,
             result:this.state.resultList,
+            memo:this.state.memo,
             uid:uid
 
         })
@@ -289,6 +306,8 @@ export class New extends React.Component<Props,State>{
         return (
 
             <div>
+              <Margin>
+
 
 <div>
 <TextField
@@ -471,18 +490,31 @@ export class New extends React.Component<Props,State>{
       })}
          </Box>
 
+
     
        </BoxContainer>
           </div>
           
-        
+                            <TextField
+          id="standard-multiline-flexible"
+          label="Enter memo"
+          multiline
+          value={this.state.memo} 
+          onChange={event => {
+            const { value } = event.target;
+            this.setState({ memo: value });
+          }}
+        />
         
            <div>
-           <button onClick={this.post.bind(this)}>sign in</button>
+             <Button
+             onClick={this.post.bind(this)}
+             >post</Button>
 
            </div>
 
-                
+           </Margin>
+
           </div>
 
         )

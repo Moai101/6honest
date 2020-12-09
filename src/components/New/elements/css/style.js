@@ -9,5 +9,9 @@ export const Box = styled.div`
 float: left
 `;
 
+export const Margin = styled.div`
+margin:30px
+`
+
 
   

@@ -10,4 +10,8 @@ float: left
 `;
 
 
+export const Margin = styled.div`
+margin:30px
+`
+
   

@@ -21,7 +21,11 @@ import {
     Field,
     FieldProps,
   } from 'formik';
-import { Box, BoxContainer } from "./elements/css/style"
+  import { 
+    Box, 
+    BoxContainer,
+    Margin
+   } from "./elements/css/style"
 
 
 
@@ -67,6 +71,7 @@ const config = {
     resultNumber:number;
     open: boolean,
     w:string;
+    memo:string;
 
 
   }
@@ -107,7 +112,8 @@ export class Edit extends React.Component<Props,State>{
     howNumber:0,
     resultNumber:0,
     open: false,
-    w:""
+    w:"",
+    memo:""
 
     }
     const ls:any = localStorage.getItem("persist:root")
@@ -119,10 +125,34 @@ export class Edit extends React.Component<Props,State>{
         }
   }
 
+  componentDidMount = async () => {
+    this.getData();
+}
+
+  async getData(){
+
+    
+    const data = await (await db.collection("5w1h").doc(store.getState().params).get()).data()
+    console.log(data)
+    this.setState({title:data?.title})
+    this.setState({whenList:data?.when})
+    this.setState({whereList:data?.where})
+    this.setState({whoList:data?.who})
+    this.setState({whatList:data?.what})
+    this.setState({whyList:data?.why})
+    this.setState({howList:data?.how})
+    this.setState({resultList:data?.result})
+    this.setState({memo:data?.memo})
+
+
+  }
+
+
+
    async post(){
     var user = firebase.auth().currentUser;
     var uid = user?.uid
-       const result = await db.collection("5w1h").add({
+       const result = await db.collection("5w1h").doc(store.getState().params).update({
             title:this.state.title,
             when:this.state.whenList,
             where:this.state.whereList,
@@ -131,6 +161,7 @@ export class Edit extends React.Component<Props,State>{
             why:this.state.whatList,
             how:this.state.howList,
             result:this.state.resultList,
+            memo:this.state.memo,
             uid:uid
 
         })
@@ -296,13 +327,13 @@ export class Edit extends React.Component<Props,State>{
         return (
 
             <div>
-                {/* {store.getState().state.params} */}
-{/*                 
+                <Margin>
 
 <div>
 <TextField
           id="standard-multiline-flexible"
           label="Enter title"
+          fullWidth
           value={this.state.title} 
           onChange={event => {
             const { value } = event.target;
@@ -483,14 +514,27 @@ export class Edit extends React.Component<Props,State>{
     
        </BoxContainer>
           </div>
+
+          <TextField
+          id="standard-multiline-flexible"
+          label="Enter memo"
+          fullWidth
+          multiline
+          value={this.state.memo} 
+          onChange={event => {
+            const { value } = event.target;
+            this.setState({ memo: value });
+          }}
+        />
           
         
         
            <div>
-           <button onClick={this.post.bind(this)}>sign in</button>
+           <Button onClick={this.post.bind(this)}>Post</Button>
 
-           </div> */}
+           </div>
 
+           </Margin>
                 
           </div>
 
